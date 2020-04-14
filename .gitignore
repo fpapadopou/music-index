@@ -1,3 +1,5 @@
 # Exclude IDE files
 .idea*
 
+# Code coverage files
+coverage.*
