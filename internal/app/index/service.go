@@ -29,25 +29,28 @@ func (s *Service) Query(ctx context.Context, q Query) ([]*Result, error) {
 	res, err := s.search.Search(ctx, q)
 	if err != nil {
 		log.Printf("Search errored: %v", err)
-		return []*Result{}, err
+		return nil, err
 	}
 
-	go func(c context.Context, query Query, rr []*Result) {
-		err := s.suggest.TrackResults(c, q, rr)
-		if err != nil {
-			log.Printf("Result tracking errored: %v", err)
-		}
-	}(ctx, q, res)
-
 	return res, nil
+}
+
+// Track handles result tracking in the SuggestionsService.
+func (s *Service) Track(ctx context.Context, q Query, rr []*Result) error {
+	err := s.suggest.TrackResults(ctx, q, rr)
+	if err != nil {
+		log.Printf("Result tracking errored: %v", err)
+	}
+
+	return err
 }
 
 // Suggest fetches search suggestions from the SuggestionsService.
 func (s *Service) Suggest(ctx context.Context, q Query) ([]*Suggestion, error) {
 	res, err := s.suggest.Suggest(ctx, q)
 	if err != nil {
-		log.Printf("Search errored: %v", err)
-		return []*Suggestion{}, err
+		log.Printf("Suggestion retrieval errored: %v", err)
+		return nil, err
 	}
 
 	return res, nil
