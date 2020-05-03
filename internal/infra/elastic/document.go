@@ -3,7 +3,6 @@ package elastic
 import (
 	"crypto/md5"
 	"encoding/hex"
-	"errors"
 	"fmt"
 	"github.com/fpapadopou/music-index/internal/app/index"
 	"io"
@@ -40,7 +39,7 @@ func createDoc(s index.Suggestion) (*document, error) {
 
 	ID, err := doc.generateID()
 	if err != nil {
-		return nil, errors.New(fmt.Sprintf("cannot create ES doc ID: %v", err))
+		return nil, fmt.Errorf("cannot create ES doc ID: %v", err)
 	}
 
 	doc.ID = ID
