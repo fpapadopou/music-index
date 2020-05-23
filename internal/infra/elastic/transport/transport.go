@@ -3,9 +3,11 @@
 package transport
 
 import (
+	"fmt"
+	"log"
+
 	"github.com/elastic/go-elasticsearch/v7"
 	"github.com/elastic/go-elasticsearch/v7/esapi"
-	"log"
 )
 
 // New returns a new ES client implementing the esapi.Transport interface.
@@ -18,6 +20,13 @@ func New() (esapi.Transport, error) {
 		return nil, err
 	}
 
-	log.Println(c.Info())
+	log.Printf("init ES client (version %v)", elasticsearch.Version)
+	res, err := c.Info()
+	if err != nil {
+		return nil, fmt.Errorf("error getting ES transport info: %+v, %+v", res, err)
+	}
+	log.Printf("ES info: %+v", res)
+
+	defer res.Body.Close()
 	return c, nil
 }

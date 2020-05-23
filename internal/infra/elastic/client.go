@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"log"
 	"strings"
 	"sync"
 
@@ -35,7 +36,7 @@ func (c *Client) TrackResults(ctx context.Context, q index.Query, rr []*index.Re
 			err := c.indexResult(ctx, q, r)
 			if err != nil {
 				// TODO: Add metrics for error types.
-				errChn <- fmt.Errorf("indexing result (%+v) for query (%+v) failed: %w", r, q, err)
+				errChn <- fmt.Errorf("indexing result for query failed: %w", err)
 			}
 		}(ctx, q, r, &wg)
 	}
@@ -100,7 +101,7 @@ func (c Client) indexResult(ctx context.Context, q index.Query, r *index.Result)
 	defer res.Body.Close()
 
 	if res.IsError() {
-		return fmt.Errorf("[%s] error indexing suggestion doc", res.Status())
+		return fmt.Errorf("error indexing suggestion doc: %+v", res.String())
 	}
 
 	return nil
