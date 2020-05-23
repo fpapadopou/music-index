@@ -17,6 +17,7 @@ type Result struct {
 
 // Suggestion represents the output of the SuggestionsService.
 type Suggestion struct {
-	Name string
-	Type string
+	Term string `json:"term"`
+	Name string `json:"name"`
+	Type string `json:"type"`
 }
