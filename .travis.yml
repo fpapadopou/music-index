@@ -3,6 +3,9 @@ language: go
 go:
   - 1.13.x
 
+services:
+  - docker
+
 before_install:
   - go get -v golang.org/x/lint/golint
 

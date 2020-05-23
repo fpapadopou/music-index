@@ -5,7 +5,7 @@ help:
 	@echo "  lint     to check code linting."
 
 ci:
-	go test ./... -race
+	go test ./... -race --tags=integration
 
 coverage:
 	go test -coverprofile=coverage.txt ./...
