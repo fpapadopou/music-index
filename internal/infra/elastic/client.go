@@ -87,9 +87,10 @@ func (c Client) indexResult(ctx context.Context, q index.Query, r *index.Result)
 	}
 
 	req := esapi.IndexRequest{
-		Index:   esIndex,
-		Body:    bytes.NewReader(body),
-		Refresh: "true",
+		Index:      esIndex,
+		DocumentID: doc.ID,
+		Body:       bytes.NewReader(body),
+		Refresh:    "true",
 	}
 
 	res, err := req.Do(context.Background(), c.es)

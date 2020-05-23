@@ -10,7 +10,7 @@ import (
 )
 
 type document struct {
-	ID        string `json:"_id"`
+	ID        string `json:"id"`
 	Timestamp int64  `json:"timestamp"`
 	Term      string `json:"term"`
 	Type      string `json:"type"`
