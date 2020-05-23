@@ -101,7 +101,8 @@ func (c Client) indexResult(ctx context.Context, q index.Query, r *index.Result)
 	defer res.Body.Close()
 
 	if res.IsError() {
-		return fmt.Errorf("error indexing suggestion doc: %+v", res.String())
+		// Don't read the response body, it causes a race condition due to a call to `io.copyBuffer()`.
+		return fmt.Errorf("error indexing suggestion doc: %+v", res.Status())
 	}
 
 	return nil
